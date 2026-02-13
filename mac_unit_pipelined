@@ -1,0 +1,29 @@
+// MAC UNIT PIPELINED --> MULTIPLIER AND ACCUMULATOR UNIT
+//i/p --> a(input feature),b(weight), acc(previous_sum)
+
+module mac_unit_pipelined#(parameter IN_WIDTH = 8, ACC_WIDTH = 16)(
+    input clk,
+    input rst,
+    input en,
+    input [IN_WIDTH-1:0] a,
+    input [IN_WIDTH-1:0] b,
+    input [ACC_WIDTH-1:0] acc_in,
+    output reg [ACC_WIDTH-1:0] acc_out
+    );
+    //defining intermediate registers for pipelining
+    reg [2*IN_WIDTH-1:0] product_reg;
+
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            product_reg <= 0;
+            acc_out <= 0;
+        end
+        else if (en) begin
+            product_reg <= a * b;
+            acc_out <= acc_in + product;
+        end
+        //else:hold value
+    end
+
+endmodule
+
